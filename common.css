@@ -47,7 +47,10 @@ body {
 #app {
   display: grid;
   grid-template-columns: 280px 1fr;
+  /* The visible height, as the body's: on a phone 100vh is the height with the browser's toolbars hidden, so with
+     them shown the bottom of the app would be under them, and the lyrics centered lower than their visible middle */
   height: 100vh;
+  height: 100dvh;
 }
 
 /* ============ LEFT PANE ============ */
@@ -600,6 +603,7 @@ body {
   overflow-y: auto;
   scroll-behavior: smooth;
   padding: 0 var(--lyrics-side-pad);
+  container-type: size;  /* its height is the cqh of the space under the lyrics (see below) */
 }
 
 #lyrics-inner {
@@ -612,6 +616,11 @@ body {
   flex: 1;
   min-height: 40px;
 }
+
+/* Under the lyrics (the last spacer, see renderLyrics), half the panel at least, so the last lines can be centered
+   too, wrapped part and all, like every other line. With only 40px there, the last line sat at the panel's bottom
+   edge, where its wrapped part could be hidden (e.g. by a phone browser's toolbar over the bottom of the screen) */
+.lyrics-spacer:last-child { min-height: 50cqh; }
 
 .lyric-meta {
   font-size: 0.78rem;

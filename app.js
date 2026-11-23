@@ -776,20 +776,47 @@ function highlightLyricLine(idx, force = false) {
   centerCurrentLine();
 }
 
-// Scroll the current line to vertical center of container (top if none)
-function centerCurrentLine() {
+// Scroll the current line to vertical center of container (top if none); smooth, or at once
+// (behavior 'instant': 'auto' would follow the CSS scroll-behavior, smooth)
+function centerCurrentLine(smooth = true) {
   const currentEl = document.querySelector('.lyric-line.current');
   const container = document.getElementById('lyrics-container');
+  const behavior  = smooth ? 'smooth' : 'instant';
   if (currentEl && container) {
     const cRect = container.getBoundingClientRect();
     const eRect = currentEl.getBoundingClientRect();
     const desired = container.scrollTop + (eRect.top - cRect.top)
                     - cRect.height / 2 + eRect.height / 2;
-    container.scrollTo({ top: desired, behavior: 'smooth' });
+    container.scrollTo({ top: desired, behavior });
   } else if (container) {
-    container.scrollTo({ top: 0, behavior: 'smooth' });
+    container.scrollTo({ top: 0, behavior });
   }
 }
+
+/* ================================================================
+   KEEP THE CURRENT LINE CENTERED
+   The lyrics are centered when the highlight moves, but the layout can change
+   between lines, more often on a phone, where the panels above the lyrics
+   share their column: opening or closing the Songs tree or View Options,
+   turning the phone, A+ / A-, Max, dragging the bilingual divider. Each moves
+   the current line, even out of sight, until the next line. So whenever the
+   lyrics panel or its content changes size, it is centered again, at once (a
+   smooth scroll would lag behind, e.g. frame by frame through the font-size
+   transition); at most once a frame. Also when the page is shown again (the
+   phone unlocked, or back from another app or tab): scrolling may not have
+   run while it was hidden.
+================================================================ */
+(() => {
+  let frame = 0;
+  const recenter = () => {
+    if (frame) return;
+    frame = requestAnimationFrame(() => { frame = 0; centerCurrentLine(false); });
+  };
+  const observer = new ResizeObserver(recenter);
+  observer.observe(document.getElementById('lyrics-container'));
+  observer.observe(document.getElementById('lyrics-inner'));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) recenter(); });
+})();
 
 /* ================================================================
    LYRICS HIGHLIGHT MODE
@@ -887,8 +914,7 @@ function setLyricsMaximized(on) {
       document.exitFullscreen().catch(() => {});
     }
   } catch (_) { /* ignore */ }
-  // Re-center after the lyric font-size transition (0.3s) settles
-  setTimeout(centerCurrentLine, 350);
+  // The lyrics panel and font size change: the current line is re-centered (see KEEP THE CURRENT LINE CENTERED)
 }
 
 // The browser's own Esc (or F11-style exit) leaves full screen: leave maximized too
@@ -1382,15 +1408,10 @@ const lyricsDivider = (() => {
     const pct   = inner.classList.contains('chinese-translation') ? 100 - left : left;
     setChineseWidth(Math.round(pct * 10) / 10);
   });
-  // Drag ended (pointer released or cancelled)
-  divider.addEventListener('lostpointercapture', () => {
-    divider.classList.remove('dragging');
-    centerCurrentLine();  // lines re-wrapped, so the current one may have moved
-  });
-  divider.addEventListener('dblclick', () => {
-    setChineseWidth(null);
-    centerCurrentLine();
-  });
+  // Drag ended (pointer released or cancelled). While dragging, the lines re-wrap and the current
+  // one is kept centered (see KEEP THE CURRENT LINE CENTERED)
+  divider.addEventListener('lostpointercapture', () => divider.classList.remove('dragging'));
+  divider.addEventListener('dblclick', () => setChineseWidth(null));
   return divider;
 })();
 
@@ -2017,6 +2038,9 @@ audio.addEventListener('play', () => {
   pickLineOnPlay = true;
   pictureOverlay.classList.add('hidden');
   updateTimingPanel();
+  // Playing again after a pause: the lyrics may have been scrolled meanwhile, and the highlight
+  // stays on the same line, so it wouldn't be centered until the next line. Center it now
+  centerCurrentLine();
 });
 
 pictureOverlay.addEventListener('click', playSelection);
