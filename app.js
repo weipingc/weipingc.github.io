@@ -22,6 +22,7 @@
 const APP_DATA = {
   version: "1.0",
   artistFiles: [
+    "assets/AsleepWiegenlied/artist.js",
     "assets/Handel/artist.js",
     "assets/HuangAnlun/artist.js",
     "assets/Mozart/artist.js",
