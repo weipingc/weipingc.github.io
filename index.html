@@ -69,8 +69,8 @@
         <div id="lyrics-shown" role="group" aria-label="Lyrics shown"
              title="Which lyrics and titles to show; at least one must be checked">
           <span id="lyrics-shown-label">Show:</span>
-          <label><input type="checkbox" value="original"    checked> Original</label>
-          <label><input type="checkbox" value="translation" checked> Translation</label>
+          <label title="Original"><input type="checkbox" value="original"    checked> Orig</label>
+          <label title="Translation"><input type="checkbox" value="translation" checked> Transltn</label>
         </div>
         <!-- On a mobile device the Mute box is hidden and the row is titled Font: instead (see common.css) -->
         <div id="audio-options" role="group" aria-labelledby="audio-options-label">
@@ -84,7 +84,7 @@
         </div>
         <!-- Behind the lyrics panel: the plain page color, graphics or a picture (see BACKGROUND in app.js) -->
         <div id="background-toggle" role="group" aria-label="Lyrics background">
-          <span id="background-toggle-label">Background:</span>
+          <span id="background-toggle-label" title="Background">BG:</span>
           <button class="ctrl-btn" data-bg="none"     title="Plain background">None</button>
           <button class="ctrl-btn" data-bg="graphics" title="Soft colored lights, drifting while the music plays">Graphics</button>
           <button class="ctrl-btn" data-bg="image"    title="The movement's picture, dimmed and blurred">Image</button>
@@ -115,6 +115,11 @@
               aria-label="Play / Pause"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.25 11 6l-8.5 4.75z"/></svg></button>
       <button class="ctrl-btn" id="btn-ff-15"        title="Fast forward 15 seconds">+15s</button>
       <button class="ctrl-btn" id="btn-ff-end"       title="Fast forward to end">&#9654;&#xFE0E;&#9654;&#xFE0E;</button>
+      <!-- Scrolls the lyrics back to the highlighted line, in the middle (a crosshair, as a map's "my location") -->
+      <button class="ctrl-btn" id="btn-sync"         title="Sync: show the selected lyric line in the center"
+              aria-label="Show the selected lyric line in the center"><svg viewBox="0 0 12 12"
+              aria-hidden="true"><circle cx="6" cy="6" r="3.5"/><circle class="dot" cx="6" cy="6" r="1"/><path
+              d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg></button>
       <input  type="range"     id="progress-bar" min="0" max="10000" value="0" step="1">
       <!-- The time and Max stay together: on a phone they wrap to their own row as one -->
       <div id="time-max">
@@ -136,6 +141,11 @@
       <button class="ctrl-btn" id="btn-next">Next &#9654;</button>
       <button class="ctrl-btn" id="btn-play-pause-max" title="Play / Pause (Space)"
               aria-label="Play / Pause" hidden><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 1.25 11 6l-8.5 4.75z"/></svg></button>
+      <!-- Sync in maximized lyrics mode, where the playback controls (with btn-sync) are hidden -->
+      <button class="ctrl-btn" id="btn-sync-max"     title="Sync: show the selected lyric line in the center"
+              aria-label="Show the selected lyric line in the center" hidden><svg viewBox="0 0 12 12"
+              aria-hidden="true"><circle cx="6" cy="6" r="3.5"/><circle class="dot" cx="6" cy="6" r="1"/><path
+              d="M6 .5v2M6 9.5v2M.5 6h2M9.5 6h2"/></svg></button>
       <button class="ctrl-btn" id="btn-restore" title="Back to the normal layout (Esc)"
               aria-label="Back to the normal layout" hidden><svg viewBox="0 0 12 12"
               aria-hidden="true"><path d="M11 1 7 5M7 2.5V5h2.5M1 11l4-4M2.5 7H5v2.5"/></svg></button>
@@ -151,12 +161,9 @@
       <!-- Thumbnail overlay: visible before playback, click to play. It covers exactly the lyrics panel(s) below it,
            and the picture uses its full width (both columns while the lyrics are bilingual) -->
       <div id="thumbnail-overlay" class="hidden">
-        <div class="thumbnail-panel"><img id="thumbnail-img" src="" alt=""></div>
-        <!-- The picture's title and painter (see PICTURE CAPTION in app.js), above the hint -->
-        <div id="thumbnail-labels">
-          <div id="picture-caption" hidden></div>
-          <div id="thumbnail-play-hint">&#9654; Click to play</div>
-        </div>
+        <img id="thumbnail-img" src="" alt="">
+        <!-- The picture's title and painter (see PICTURE CAPTION in app.js), below it -->
+        <div id="picture-caption" hidden></div>
       </div>
       <div id="manual-hint" hidden><span id="rec-indicator" hidden>&#9679; REC</span>&darr;&rarr; next &nbsp; &uarr;&larr; back &nbsp; (swipe: up = next, down = back)</div>
       <div id="lyrics-container">

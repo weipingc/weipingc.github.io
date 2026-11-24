@@ -104,3 +104,31 @@ Verified in headless Chrome, last line highlighted, movements whose last line wr
 Side effect: when a movement's lyrics are shorter than the panel (on a phone almost never; on a large desktop
 screen, Max, 13 of the 40 movements), they are no longer centered as a block: they end at the middle of the panel,
 so they sit higher (Messiah 1, the shortest, about 90px at 1920×1080).
+
+---
+
+## Ask
+
+Add a button labelled with Sync or a good icon next to the btn-ff-end button, when clicked make sure the selected
+line is displayed at center
+
+## Answer
+
+Added **Sync** (`#btn-sync`) right after ▶▶ (fast-forward to end), with a crosshair icon (as a map's "my location"),
+drawn as an SVG in the same line style as the Max arrows. Its tooltip is "Sync: show the selected lyric line in the
+center".
+
+- [index.html](../../index.html): the button, after `#btn-ff-end`.
+- [app.js](../../app.js): its click handler calls `centerCurrentLine()`: a smooth scroll back to the highlighted line
+  (in auto mode the line being played, in manual mode the operator's line). With no line highlighted it scrolls to
+  the top. It blurs itself so Space keeps toggling play / pause.
+- [common.css](../../common.css): the icon's style (1.2em, the button as tall as ▶▶: 24px), and, at 380px or less,
+  2px less side padding on each of the six playback buttons. Without that, the time and Max would go to a row of
+  their own on 360px phones (common Android width): the row was 3–17px short. Now they wrap only below about 350px
+  (with a time like 10:00/10:00 below about 356px).
+- [README.md](../../README.md): the button, and the narrow-screen widths.
+
+Verified in headless Chrome: line 12 highlighted, lyrics scrolled 2321px away, Sync → 0px from center. Row height
+unchanged at 414 / 390 / 375 / 360px (50px) and in landscape and on desktop.
+
+Not in Max mode: the playback controls are hidden there (only the top bar's ▶ / ❚❚ and restore are shown).

@@ -899,8 +899,9 @@ document.querySelectorAll('#mode-toggle .ctrl-btn').forEach(btn => {
    MAXIMIZE LYRICS PANEL
    Max (last in the playback controls) hides the left nav pane,
    the playback controls (including Max), the song navigation buttons and
-   the info pane; lyrics font grows (CSS). Esc restores. Space / arrow keys
-   still control playback.
+   the info pane; lyrics font grows (CSS). The top bar shows its own play /
+   pause, Sync and restore buttons. Esc restores. Space / arrow keys still
+   control playback.
 ================================================================ */
 function setLyricsMaximized(on) {
   const app = document.getElementById('app');
@@ -1207,7 +1208,7 @@ lyricsBgImage.addEventListener('error', () => {
 /* ================================================================
    PICTURE BEFORE PLAYBACK
    Until playback starts, the thumbnail overlay covers the lyrics area
-   with the selection's picture and "▶ Click to play": a selected artist's
+   with the selection's picture (a click on it plays): a selected artist's
    thumbnail (see SELECT ARTIST), a selected work's thumbnail (see SELECT
    WORK), or a selected movement's background (of
    the image set picked, see PICTURE VERSIONS), else its thumbnail, else
@@ -1261,9 +1262,10 @@ function showPictureOverlay() {
 /* ================================================================
    PICTURE CAPTION
    While the selection's picture is shown before playback (in the overlay,
-   or filling the area in Image mode), a caption above "▶ Click to play"
-   names it: its title, then "by" its painter (or maker), from work.js or
-   artist.js — backgroundTitle and backgroundPainter for a movement's
+   or filling the area in Image mode), a caption below it (in Image mode
+   over it, at the bottom) names it: its title, then "by" its painter (or
+   maker), from work.js or artist.js — backgroundTitle and
+   backgroundPainter for a movement's
    background, background2Title and background2Painter for its background2
    (see PICTURE VERSIONS), and thumbnailTitle and thumbnailPainter for a
    movement's, work's or artist's thumbnail (a work's thumbnail keeps its
@@ -2113,6 +2115,15 @@ document.getElementById('btn-ff-15').addEventListener('click', () => {
 
 document.getElementById('btn-ff-end').addEventListener('click', () => {
   if (isFinite(audio.duration)) audio.currentTime = audio.duration;
+});
+
+// Sync: back to the highlighted line (in auto mode the one being played), e.g. after scrolling the lyrics. The
+// playback controls' button, and the top bar's in maximized lyrics mode (index1.html has neither)
+['btn-sync', 'btn-sync-max'].forEach(id => {
+  document.getElementById(id)?.addEventListener('click', e => {
+    e.currentTarget.blur();  // so Space doesn't re-activate the button
+    centerCurrentLine();
+  });
 });
 
 document.getElementById('progress-bar').addEventListener('input', e => {

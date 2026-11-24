@@ -112,10 +112,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 │   (collapsed) │                                                             │
 │ Lyrics:[Auto| │                                                             │
 │ Manual]       │                                                             │
-│ Show: ☑ Orig. │                                                             │
-│   ☑ Transl.   │                                                             │
+│ Show: ☑ Orig  │                                                             │
+│   ☑ Transltn  │                                                             │
 │ Font: A− A+   │                                                             │
-│ Background:   │                                                             │
+│ BG:           │                                                             │
 │ [None|Graph…] │                                                             │
 └───────────────┴─────────────────────────────────────────────────────────────┘
 ```
@@ -135,14 +135,14 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     button; open it with the button. Not shown on a smartphone. See [Flow: timing the lyrics](#flow-timing-the-lyrics).
   - **Lyrics: Auto | Manual** (below the LYRICS TIMING panel) switches the
     [highlight mode](#lyrics-highlight-modes). The player starts in Manual.
-  - **Show: ☑ Original ☑ Translation** (under them) chooses which lyrics the panel shows, and which titles the top
+  - **Show: ☑ Orig ☑ Transltn** (Original and Translation, under them) chooses which lyrics the panel shows, and which titles the top
     bar shows. See **Translation** below.
   - **Audio: ☑ Mute** (the last row; not on `index1.html`, see [Silent and sound pages](#silent-and-sound-pages))
     silences the audio without stopping it. The music keeps playing with no sound, so the lyrics are highlighted, the
     progress bar moves and the keyboard works exactly as usual. This suits showing the timed lyrics while the music is
     performed live. Your choice stays when you go to another movement, and is kept in the `mute` URL parameter. On
     `index1.html` the row is just **Font:** (the lyrics size buttons), because the audio is always silent.
-  - **Background: None | Graphics | Image** chooses what is behind the lyrics panel. See **Background** below.
+  - **BG: None | Graphics | Image** (Background) chooses what is behind the lyrics panel. See **Background** below.
   - **Image set: 1 | 2** (the last row; only in the Image background mode, for a movement that has two sets of
     pictures, such as 安魂曲) picks which set the Image background shows. See **Background** below.
   - **Smartphone layout** (window 700 px wide or narrower). The playback controls are at the top of the screen, then
@@ -150,14 +150,17 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The
     lyrics take the rest, so the song navigation and lyrics move up when you collapse tree folders or the whole
     **SONGS** panel. The **SONGS** title bar stays at the top of the pane while the tree scrolls. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
-    **Show**, **Audio:** (or **Font:**) and **Background** is titled **VIEW OPTIONS** and is collapsible there: it starts
+    **Show**, **Audio:** (or **Font:**) and **BG** is titled **VIEW OPTIONS** and is collapsible there: it starts
     collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
     parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
-  beginning, −15s, ▶ / ❚❚ play/pause, +15s, and ▶▶ fast-forward to the end. Next to them are a draggable progress bar
+  beginning, −15s, ▶ / ❚❚ play/pause, +15s, ▶▶ fast-forward to the end, and **⌖** (sync), which scrolls the lyrics
+  back to the highlighted line (in Auto mode the line being played) and shows it in the center, e.g. after you
+  scrolled the lyrics to read ahead. Next to them are a draggable progress bar
   and the elapsed / total time, then, a little apart at the right end, the **⤢** (maximize) button, which shows only the lyrics (see
   [Maximized lyrics](#maximized-lyrics)). In the smartphone layout the buttons look as they do on a computer, the time and **⤢** are at
-  the right end of the button row (on a row of their own on a very narrow screen, about 320 px), and the progress bar
+  the right end of the button row (on a row of their own on a very narrow screen, below about 350 px; at 380 px or
+  less the buttons are a little narrower so that 360 px still fits), and the progress bar
   is always on a row of its own below them.
 - **Song navigation section** (below the playback controls)
   - **◀ Prev / Next ▶** go to the previous or next movement. If music is playing, the new movement starts playing.
@@ -185,7 +188,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     the movement's `titleTranslation`, `subtitleTranslation` and `voicingTranslation` in `work.js`. Movements without
     translations keep one full-width column.
   - **Original / Translation check boxes.** Both are checked by default, which gives the two columns above. Uncheck
-    **Translation** to show only the original lyrics, or **Original** to show only the translation, each in one
+    **Transltn** to show only the original lyrics, or **Orig** to show only the translation, each in one
     full-width column. With only Translation checked, a line without a translation shows its original text, and so
     does a movement with no translations at all. At least one box must stay checked, so the last checked box is
     disabled. The highlighted line stays the same when you change them. The choice applies to every movement and is
@@ -194,29 +197,29 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     It turns gold under the mouse. Double-click it to go back to 45% for the Chinese column. The new width belongs to
     the Chinese column, so it keeps it when you go to a work that has its Chinese lyrics on the other side. It is kept in the
     URL parameter `chinese-width` (a percent, 20 to 80), so reloading or sharing the link restores it.
-  - **Picture.** The selection's picture covers the lyrics until playback starts, with "▶ Click to play": a selected
+  - **Picture.** The selection's picture covers the lyrics until playback starts (a click on it plays): a selected
     artist's `thumbnail` (a portrait of the composer; else its first work's), a selected work's `thumbnail` (a
     picture of the work itself, e.g. a page of its autograph score), or a selected movement's `background`
     (`background2` in image set 2), else its own
     `thumbnail`, else its work's (in the Image background mode, a movement's background picture fills the area
     instead: see **Background** below).
     It is a placeholder for the lyrics panels: it has exactly their size (the same side margins), and the picture uses
-    its full width, across both columns while the lyrics are bilingual, scaled to fit whole, with the caption and
-    "▶ Click to play" centered at the bottom. It is hidden while the music plays so it never makes the lyrics hard to
+    its full width, across both columns while the lyrics are bilingual, scaled to fit whole, with its caption right
+    below it (the two centered in the area together). It is hidden while the music plays so it never makes the lyrics hard to
     read.
-  - **Caption.** While the selection's picture is shown before playback (in either mode), a caption above
-    "▶ Click to play" names it: its title, then "by" its painter (or maker), e.g. *Agnus Dei* by Francisco de
+  - **Caption.** While the selection's picture is shown before playback (in either mode), a caption below it
+    (in the Image background mode, over it at the bottom) names it: its title, then "by" its painter (or maker), e.g. *Agnus Dei* by Francisco de
     Zurbarán. They come from `backgroundTitle` and `backgroundPainter` in `work.js` (`background2Title` and
     `background2Painter` for image set 2), and for a thumbnail from `thumbnailTitle` and `thumbnailPainter` in
     `work.js` (a work's or a movement's) or `artist.js` (an artist's), e.g. *Wolfgang Amadeus Mozart* by Barbara
     Krafft. A work's thumbnail keeps its caption when a movement without a picture of its own shows it. A `bg-image`
     picture, or a picture without a title, has no caption; the caption goes with the picture when the music starts.
-  - **Background.** What is behind the lyrics, chosen with **Background: None | Graphics | Image** in the left pane
+  - **Background.** What is behind the lyrics, chosen with **BG: None | Graphics | Image** in the left pane
     and kept in the `bg` URL parameter (`none`, `graphics` or `image`; `graphics` by default).
     - **None**: the plain page color.
     - **Graphics**: soft colored lights that drift slowly while the music plays and stand still while it is paused.
       Their hue comes from the movement, so each movement has its own colors.
-    - **Image**: a picture. Before playback it fills the lyrics area as it is, sharp, with "▶ Click to play" over it
+    - **Image**: a picture. Before playback it fills the lyrics area as it is, sharp, with its caption over it at the bottom
       (instead of the thumbnail); when the music starts it blurs and darkens behind the lyrics. It is the `bg-image` URL
       parameter if given (one picture for
       every movement), else the movement's `background` in `work.js`, else its `thumbnail`, else its work's. A

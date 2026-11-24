@@ -532,11 +532,22 @@ body {
 }
 
 /* Image mode before playback, while the thumbnail overlay is up (see "Thumbnail overlay" below): the movement's
-   picture is shown as it is, sharp and not dimmed, filling the song area, with "▶ Click to play" over it; the overlay
-   is see-through, its thumbnail and the lyrics hidden. When the music starts (the overlay goes) the picture blurs and
-   dims behind the lyrics as they fade in. Without a picture (.has-image) the usual thumbnail overlay shows */
-#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-overlay { background: transparent; }
-#song-display[data-bg="image"]:has(#lyrics-bg.has-image) .thumbnail-panel { visibility: hidden; }
+   picture is shown as it is, sharp and not dimmed, filling the song area, with its caption over it at the bottom, on
+   a dark band so it is readable over any picture; the overlay is see-through, its thumbnail and the lyrics hidden.
+   When the music starts (the overlay goes) the picture blurs and dims behind the lyrics as they fade in. Without a
+   picture (.has-image) the usual thumbnail overlay shows */
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-overlay {
+  background: transparent;
+  justify-content: flex-end;
+  padding-bottom: 18px;
+}
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #thumbnail-img { display: none; }
+#song-display[data-bg="image"]:has(#lyrics-bg.has-image) #picture-caption {
+  background: rgba(0,0,0,0.7);
+  color: var(--text-primary);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
 #lyrics-container { transition: opacity 0.6s ease; }
 #song-display[data-bg="image"]:has(#lyrics-bg.has-image):has(#thumbnail-overlay:not(.hidden)) #lyrics-container {
   opacity: 0;
@@ -730,79 +741,55 @@ body {
   margin-top: 40px;
 }
 
-/* ─── Thumbnail overlay (shown before playback starts) ───
+/* ─── Thumbnail overlay (shown before playback starts; a click on it plays) ───
    It is the placeholder of the lyrics panel(s): the same box as the real lyrics (the song area less
    the same side margins, --lyrics-side-pad). The picture uses the full width of that box, across both
-   columns while the lyrics are bilingual, scaled to fit it whole; the caption and hint are centered at
-   the bottom. */
+   columns while the lyrics are bilingual, scaled to fit it whole; its caption is right below it, and the
+   two are centered in the box together. */
 #thumbnail-overlay {
   position: absolute;
   inset: 0 var(--lyrics-side-pad);
   display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
   background: var(--bg-primary);
   z-index: 10;
   cursor: pointer;
   transition: opacity 0.6s ease;
 }
+/* With a caption, a little space between it and the bottom of the box */
+#thumbnail-overlay:has(#picture-caption:not([hidden])) { padding-bottom: 10px; }
 
 #thumbnail-overlay.hidden {
   opacity: 0;
   pointer-events: none;
 }
 
-.thumbnail-panel {
-  flex: 1;
-  min-width: 0;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* As large as the panel allows, whole (scaled up too, so a smaller picture still fills the width or height) */
-#thumbnail-overlay img {
+/* The picture: the full width of the box, whole (scaled up too, so a smaller picture still fills the width or
+   height). Its box is as tall as the picture at that width, so the caption is right below it; a taller picture
+   shrinks to the height the caption leaves (its box then keeps the full width, the picture centered in it) */
+#thumbnail-img {
+  flex: 0 1 auto;
   width: 100%;
-  height: 100%;
+  height: auto;
+  min-height: 0;
   object-fit: contain;
   display: block;
 }
 
-/* The picture's caption (see PICTURE CAPTION in app.js) above the hint, centered at the bottom */
-#thumbnail-labels {
-  position: absolute;
-  bottom: 18px;
-  left: 16px;
-  right: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  pointer-events: none;
-}
-
+/* The picture's caption (see PICTURE CAPTION in app.js), right below it */
 #picture-caption {
-  max-width: 40em;
-  background: rgba(0,0,0,0.7);  /* readable over any picture */
-  color: var(--text-primary);
+  flex-shrink: 0;
+  max-width: min(40em, calc(100% - 32px));
+  color: var(--text-secondary);
   font-size: 0.8rem;
   line-height: 1.4;
-  padding: 4px 12px;
-  border-radius: 12px;
   text-align: center;
 }
 #picture-caption[hidden] { display: none; }
 #picture-caption cite { font-style: italic; }
-
-#thumbnail-play-hint {
-  background: rgba(0,0,0,0.8);  /* dark enough to read over a light picture too (Image background mode) */
-  color: var(--accent);
-  font-size: 0.8rem;
-  padding: 5px 14px;
-  border-radius: 20px;
-  letter-spacing: 0.05em;
-  white-space: nowrap;
-  pointer-events: none;
-}
 
 
 /* ─── Playback controls (first panel of the right pane) ─── */
@@ -880,15 +867,33 @@ body {
   fill: currentColor;
 }
 
-/* The five playback buttons (Max, inside #time-max, is not a direct child): compact */
+/* The six playback buttons (Max, inside #time-max, is not a direct child): compact */
 #playback-controls > .ctrl-btn { padding: 4px 8px; font-size: 0.72rem; }
 #playback-controls > #btn-play-pause { padding: 4px 11px; min-width: 36px; font-size: 0.88rem; }
+
+/* Sync: a crosshair, drawn in lines as Max's arrows, with a dot in the middle; the size of the text beside it */
+#btn-sync svg,
+#btn-sync-max svg {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.25em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  stroke-linecap: round;
+}
+#btn-sync svg .dot,
+#btn-sync-max svg .dot { fill: currentColor; stroke: none; }
 
 /* Max: a larger icon */
 #btn-maximize { padding: 3px 9px; font-size: 1rem; }
 
+/* The progress bar takes whatever room the buttons, the time and Max leave, down to 40px. width: 0 replaces the
+   range input's own width (about 129px), which would otherwise be the least the row can be: wider than the right
+   pane on a phone in landscape, pushing Max out of sight */
 #progress-bar {
-  flex: 1;
+  flex: 1 1 0;
+  width: 0;
   height: 3px;
   accent-color: var(--accent);
   cursor: pointer;
@@ -1032,8 +1037,12 @@ body {
 #app.lyrics-maximized #left-pane,
 #app.lyrics-maximized #playback-controls,
 #app.lyrics-maximized #info-pane,
-#app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-restore) { display: none; }
+#app.lyrics-maximized #song-nav > :not(#now-playing):not(#btn-play-pause-max):not(#btn-sync-max):not(#btn-restore) {
+  display: none;
+}
+/* Maximized, the top bar has its own play / pause, Sync and restore buttons (the playback controls are hidden) */
 #app.lyrics-maximized #btn-play-pause-max,
+#app.lyrics-maximized #btn-sync-max,
 #app.lyrics-maximized #btn-restore { display: inline-block; }
 /* The maximize and restore buttons' icons (no labels): two arrows pointing out to the corners (maximize), and the
    reverse, two arrows pointing in to the middle (restore). Sized in rem, not em, so both are the same size although
@@ -1121,8 +1130,9 @@ body {
    and gets the two-pane layout, so turning the phone doesn't make the right side's text, the playback buttons and
    the spaces between them larger (which could push Max out of sight) ─── */
 @media (max-width: 700px), (orientation: landscape) and (max-height: 500px) and (pointer: coarse) {
-  /* The five playback buttons keep the desktop's size and look (they fit: the progress bar has a row of its own in
-     portrait, and the right pane is wide enough in landscape); a little less space between them and around the row */
+  /* The six playback buttons keep the desktop's size and look (they fit: the progress bar has a row of its own in
+     portrait, and in landscape it shrinks to leave them, the time and Max room); a little less space between them
+     and around the row */
   #playback-controls { padding: 6px 4px 6px 8px; gap: 3px; }
   #btn-maximize { padding: 2px 7px; font-size: 0.9rem; }
   #time-max { gap: 8px; }
@@ -1132,6 +1142,13 @@ body {
   /* Lyric lines at half the size of a wider window, maximized or not (A− / A+ still scale them) */
   .lyric-line { font-size: calc(0.975rem * var(--lyrics-font-scale, 1)); }
   #app.lyrics-maximized .lyric-line { font-size: calc(1.35rem * var(--lyrics-font-scale, 1)); }
+}
+
+/* A narrow phone (e.g. 360px): the playback buttons 4px narrower each, so the time and Max still fit on their row
+   with the six buttons (24px; with the desktop's padding they would go to a row of their own below 375px) */
+@media (max-width: 380px) {
+  #playback-controls > .ctrl-btn { padding-left: 6px; padding-right: 6px; }
+  #playback-controls > #btn-play-pause { padding-left: 9px; padding-right: 9px; }
 }
 
 /* Lyrics font size adjuster (next to the Mute box) */
