@@ -216,15 +216,18 @@ body {
   letter-spacing: 0.06em;
 }
 
-/* Up arrow; turned to point down while the panel is open. The Songs panel's arrow (above) looks the same */
+/* Up arrow; turned to point down while the panel is open. The Songs panel's arrow (above) and the info pane's (at the
+   bottom of the right pane) look the same */
 #btn-timing-toggle,
-#btn-tree-toggle {
+#btn-tree-toggle,
+#btn-info-toggle {
   margin-left: auto;
   display: flex;
   padding: 4px 8px;
 }
 #btn-timing-toggle svg,
-#btn-tree-toggle svg {
+#btn-tree-toggle svg,
+#btn-info-toggle svg {
   width: 12px;
   height: 12px;
   fill: none;
@@ -377,7 +380,7 @@ body {
 /* ============ RIGHT PANE ============ */
 #right-pane {
   display: grid;
-  grid-template-rows: auto auto 1fr 100px;
+  grid-template-rows: auto auto 1fr auto;  /* the info pane: 100px, or its title bar while collapsed */
   overflow: hidden;
 }
 
@@ -991,16 +994,55 @@ body {
   z-index: 5;
 }
 
-/* ─── Info Pane ─── */
+/* ─── Info Pane: open by default; its arrow collapses it to an INFO title bar, giving the lyrics the room ─── */
 #info-pane {
   display: flex;
   align-items: flex-start;
   gap: 18px;
+  height: 100px;
   padding: 12px 18px;
   background: var(--bg-secondary);
   border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+/* Open: the details fill the pane and scroll when long; the arrow (alone: the title shows only while collapsed) is at
+   the top right, where it stays when the pane is collapsed */
+#info-body {
+  flex: 1;
+  min-width: 0;
+  align-self: stretch;
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
   overflow-y: auto;
 }
+
+#info-header {
+  order: 1;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  margin-top: -4px;  /* the arrow's padding: its top lines up with the first line of the details */
+}
+
+#info-header h2 {
+  display: none;
+  font-size: 0.72rem;
+  font-weight: normal;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+
+/* Docked at the bottom, the pane opens upward, as the LYRICS TIMING panel: the arrow points up while collapsed, down
+   while open */
+#info-pane:not(.collapsed) #btn-info-toggle { transform: rotate(180deg); }
+
+/* Collapsed: only the title and the arrow show */
+#info-pane.collapsed { height: auto; padding-top: 6px; padding-bottom: 6px; }
+#info-pane.collapsed #info-body { display: none; }
+#info-pane.collapsed #info-header { flex: 1; margin-top: 0; }
+#info-pane.collapsed #info-header h2 { display: block; }
 
 #info-left {
   flex-shrink: 0;
@@ -1123,7 +1165,8 @@ body {
   #playback-controls { flex-wrap: wrap; justify-content: center; }
   #progress-bar { flex: 1 1 100%; order: 1; margin: 1px 0 -6px; }
   #time-max { flex: 1 0 auto; justify-content: flex-end; }
-  #info-pane { max-height: 64px; padding: 6px 10px; gap: 10px; }
+  #info-pane { height: auto; max-height: 64px; padding: 6px 10px; gap: 10px; }
+  #info-body { gap: 10px; }
 }
 
 /* ─── Smartphone sizes: in portrait (the layout above) and also in landscape, where the phone is wider than 700px
