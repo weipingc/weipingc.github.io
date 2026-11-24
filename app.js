@@ -431,8 +431,8 @@ function updateTimeInUrl() {
                      setTreePanelOpen)
      timing          open | collapsed, the Lyrics Timing panel (default collapsed; see
                      setTimingPanelOpen)
-     view-options    open | collapsed, the View Options panel, which only a smartphone layout can
-                     collapse (default collapsed; see setViewPanelOpen)
+     view-options    open | collapsed, the View Options panel (default collapsed; see
+                     setViewPanelOpen)
      info            open | collapsed, the info pane under the lyrics (default open; on a mobile
                      device in landscape it starts collapsed whatever this says; see
                      setInfoPaneOpen and mobileLandscape)
@@ -1899,9 +1899,9 @@ document.getElementById('btn-timing-toggle').addEventListener('click', e => {
   btn.blur();  // so Space doesn't re-activate the button
 });
 
-// The View Options panel (#view-panel: lyrics mode, Show, Audio / Font) can be collapsed
-// on a smartphone only (the CSS shows its title bar and hides its body in a narrow window); it
-// starts collapsed to its title and arrow unless the URL says open (see VIEW OPTIONS IN URL)
+// The View Options panel (#view-panel: lyrics mode, Show, Audio / Font, BG) is collapsed to its
+// VIEW OPTIONS title and arrow unless the URL says open (see VIEW OPTIONS IN URL); the arrow
+// opens and closes it, and the URL follows
 function setViewPanelOpen(open) {
   const btn = document.getElementById('btn-view-toggle');
   document.getElementById('view-panel').classList.toggle('collapsed', !open);

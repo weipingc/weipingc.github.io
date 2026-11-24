@@ -216,10 +216,11 @@ body {
   letter-spacing: 0.06em;
 }
 
-/* Up arrow; turned to point down while the panel is open. The Songs panel's arrow (above) and the info pane's (at the
-   bottom of the right pane) look the same */
+/* Up arrow; turned to point down while the panel is open. The Songs panel's arrow (above), the View Options panel's
+   (below) and the info pane's (at the bottom of the right pane) look the same */
 #btn-timing-toggle,
 #btn-tree-toggle,
+#btn-view-toggle,
 #btn-info-toggle {
   margin-left: auto;
   display: flex;
@@ -227,6 +228,7 @@ body {
 }
 #btn-timing-toggle svg,
 #btn-tree-toggle svg,
+#btn-view-toggle svg,
 #btn-info-toggle svg {
   width: 12px;
   height: 12px;
@@ -324,10 +326,34 @@ body {
   gap: 8px;
 }
 
-/* Title bar and arrow: smartphones only, where the panel is collapsible (see the max-width media query at the end) */
-#view-header { display: none; }
+/* Title bar with an arrow (the arrow's look: see #btn-timing-toggle). Collapsed (the default): only the title and the
+   arrow show. Docked at the bottom of the pane, the panel opens upward like the LYRICS TIMING panel, so the arrow
+   points up while collapsed and down while open (where it opens downward instead, the reverse: see below) */
+#view-header { display: flex; align-items: center; justify-content: space-between; }
+#view-panel:not(.collapsed) #view-header { margin-bottom: 6px; }
+#view-header h2 {
+  font-size: 0.72rem;
+  font-weight: normal;
+  color: var(--accent);
+  letter-spacing: 0.06em;
+}
+#view-panel:not(.collapsed) #btn-view-toggle { transform: rotate(180deg); }
+#view-panel.collapsed { padding-top: 6px; padding-bottom: 6px; }
+#view-panel.collapsed #view-body { display: none; }
 
-#view-panel .ctrl-btn { padding: 5px 8px; font-size: 0.76rem; }
+/* The panel opens downward (the title stays, the options push what is below them down) in the smartphone layout, and
+   on a mobile device while the SONGS panel is collapsed (with no timing panel to keep it docked at the bottom, it
+   moves up under the SONGS title bar): the arrow points down while collapsed and up while open, like the SONGS arrow */
+@media (max-width: 700px) {
+  #view-panel.collapsed #btn-view-toggle { transform: rotate(180deg); }
+  #view-panel:not(.collapsed) #btn-view-toggle { transform: none; }
+}
+@media (pointer: coarse) and (hover: none) {
+  #tree-panel.collapsed ~ #view-panel.collapsed #btn-view-toggle { transform: rotate(180deg); }
+  #tree-panel.collapsed ~ #view-panel:not(.collapsed) #btn-view-toggle { transform: none; }
+}
+
+#view-body .ctrl-btn { padding: 5px 8px; font-size: 0.76rem; }
 
 /* Original / Translation check boxes, and the Mute check box: a row each */
 #lyrics-shown,
@@ -1129,31 +1155,6 @@ body {
   /* The pane scrolls as a whole here: the Songs title bar stays at its top, so the tree can always be collapsed */
   #tree-header { position: sticky; top: 0; background: var(--bg-nav); z-index: 2; }
   #view-panel { position: sticky; bottom: 0; background: var(--bg-nav); z-index: 2; }
-
-  /* View panel: collapsible; collapsed (only its title and the arrow) by default. It opens downward (the title stays,
-     the options push the lyrics down), so the arrow points down while collapsed and up while open — the reverse of
-     the LYRICS TIMING arrow on a wider window, whose panel is docked at the bottom and opens upward */
-  #view-header { display: flex; align-items: center; justify-content: space-between; }
-  #view-panel:not(.collapsed) #view-header { margin-bottom: 6px; }
-  #view-header h2 {
-    font-size: 0.72rem;
-    font-weight: normal;
-    color: var(--accent);
-    letter-spacing: 0.06em;
-  }
-  #btn-view-toggle { display: flex; margin-left: auto; padding: 4px 8px; }
-  #btn-view-toggle svg {
-    width: 12px;
-    height: 12px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  #view-panel.collapsed #btn-view-toggle { transform: rotate(180deg); }
-  #view-panel.collapsed { padding-top: 6px; padding-bottom: 6px; }
-  #view-panel.collapsed #view-body { display: none; }
 
   #song-nav { padding: 6px 8px; gap: 6px; }
   #song-nav .ctrl-btn { padding: 7px 10px; }

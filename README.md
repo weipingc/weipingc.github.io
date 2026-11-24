@@ -110,6 +110,7 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
 │               ├────────────────────────┴────────────────────────────────────┤
 │ LYRICS TIMING │ Artist · Work Op. (year) · Premiere: … │ Description      ˅ │  info pane
 │   (collapsed) │                                                             │
+│ VIEW OPTIONS ˅│                                                             │
 │ Lyrics:[Auto| │                                                             │
 │ Manual]       │                                                             │
 │ Show: ☑ Orig  │                                                             │
@@ -133,7 +134,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     the pane when it is collapsed.
   - **LYRICS TIMING panel.** Docked near the bottom of the pane and collapsed by default, showing its title and a `^`
     button; open it with the button. Not shown on a smartphone. See [Flow: timing the lyrics](#flow-timing-the-lyrics).
-  - **Lyrics: Auto | Manual** (below the LYRICS TIMING panel) switches the
+  - **VIEW OPTIONS panel.** At the bottom of the pane, under the LYRICS TIMING panel, holding the rows below. It is
+    collapsed by default to its title and an arrow button (on any screen); the arrow opens it and closes it again. The
+    state is kept in the `view-options` URL parameter (`open` or `collapsed`).
+  - **Lyrics: Auto | Manual** (the first row of the VIEW OPTIONS panel) switches the
     [highlight mode](#lyrics-highlight-modes). The player starts in Manual.
   - **Show: ☑ Orig ☑ Transltn** (Original and Translation, under them) chooses which lyrics the panel shows, and which titles the top
     bar shows. See **Translation** below.
@@ -149,10 +153,8 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     the navigation pane, then the rest of the player (song navigation, lyrics, info pane). The navigation pane is as
     tall as its content (the tree and the View Options panel) up to 64% of the height, then the tree scrolls. The
     lyrics take the rest, so the song navigation and lyrics move up when you collapse tree folders or the whole
-    **SONGS** panel. The **SONGS** title bar stays at the top of the pane while the tree scrolls. The LYRICS TIMING panel is not shown. The panel with **Lyrics: Auto | Manual**,
-    **Show**, **Audio:** (or **Font:**) and **BG** is titled **VIEW OPTIONS** and is collapsible there: it starts
-    collapsed to its title and an arrow button, and the arrow opens it. The state is kept in the `view-options` URL
-    parameter (`open` or `collapsed`). On a wider window the panel is always shown and has no title or arrow.
+    **SONGS** panel. The **SONGS** title bar stays at the top of the pane while the tree scrolls. The LYRICS TIMING
+    panel is not shown.
 - **Playback control section** (the top bar of the right pane). These are the playback buttons: ◀◀ rewind to the
   beginning, −15s, ▶ / ❚❚ play/pause, +15s, ▶▶ fast-forward to the end, and **⌖** (sync), which scrolls the lyrics
   back to the highlighted line (in Auto mode the line being played) and shows it in the center, e.g. after you
