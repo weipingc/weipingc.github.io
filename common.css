@@ -431,8 +431,9 @@ body {
   text-overflow: ellipsis;
 }
 
+/* The work titles (empty, so not shown, on a phone in portrait: see compactNowPlaying in app.js) */
 #np-label, #np-label-translation {
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   color: var(--accent);
   letter-spacing: 0.04em;
 }
@@ -441,6 +442,9 @@ body {
   font-size: 0.95rem;
   color: var(--text-primary);
 }
+
+/* With the work titles shown, the movement titles a little smaller (shown alone, they keep the size above) */
+#now-playing:has(#np-label:not(:empty)) :is(#np-title, #np-title-translation) { font-size: 0.88rem; }
 
 /* Space between work name and movement title (none while no song is selected) */
 #np-label:not(:empty) + #np-title,

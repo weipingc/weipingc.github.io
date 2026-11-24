@@ -35,3 +35,23 @@ Turning the device updates the header right away (the media query's `change` lis
 - Mozart Requiem, I (longest titles): landscape 844×390 shows `Requiem  I. Introitus, Kyrie,…  安魂曲  I. 进台经、垂怜经、…`,
   cut with an ellipsis, no overflow; 667×375 (single-column phone layout) shows all of it.
 - Desktop 1280×800 unchanged; a 600×900 desktop window stays compact.
+
+---
+
+## Ask
+
+> Make the work title and titleTranslation bigger when are displayed, movement titles a little bit smaller
+
+## Answer
+
+`common.css`, now-playing header:
+
+| | Before | After |
+|---|---|---|
+| Work titles (`#np-label`, `#np-label-translation`) | 0.72rem | **0.85rem** |
+| Movement titles, with the work titles shown | 0.95rem | **0.88rem** |
+| Movement titles alone (phone in portrait, where the work titles are hidden) | 0.95rem | 0.95rem (unchanged) |
+
+The smaller movement size applies through `#now-playing:has(#np-label:not(:empty))`, so it follows whatever
+`compactNowPlaying` decides. Verified in headless Chrome: desktop and phone landscape 13.6px / 14.08px (work /
+movement), phone portrait movement titles still 15.2px.
