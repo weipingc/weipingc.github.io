@@ -171,7 +171,10 @@ time, or Save the recording to its `.timing.js` file (see [Flow: timing the lyri
     check boxes: with only Original checked it shows "安魂曲 I. 永远安息", and with only Translation checked
     "Requiem I. Eternal Rest" (a title without a translation shows its original). While the lyrics panel shows two
     columns, the song navigation bar is split the same way: the original titles are centered over the original lyrics and the
-    translations over the translations. Dragging the divider moves both.
+    translations over the translations. Dragging the divider moves both. On a mobile device (or in a window
+    700 px wide or narrower) in portrait there is no room for the work titles: only the movement titles are shown,
+    cut to their first 20 characters. In landscape the work titles are shown too, and a title that doesn't fit ends
+    with "…".
 - **Song playing section (lyrics)**
   - **Movement heading.** The number and title, then the subtitle (e.g. the Bible references) and the voicing.
   - **Lyric lines.** The current line has a gold left border, a tinted background and a larger font. Up to 4 lines

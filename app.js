@@ -449,10 +449,12 @@ function urlParam(name) {
    LOAD MOVEMENT
 ================================================================ */
 // On a mobile device (a touch screen without a mouse) or in a window as narrow as a
-// phone's (the same media query as the CSS rule that hides the timing panel), the
-// now-playing header has no room for the full titles: it leaves out the work titles
-// and cuts each movement title (with its number) to its first 20 characters
-const compactNowPlaying = matchMedia('(max-width: 700px), (pointer: coarse) and (hover: none)');
+// phone's, in portrait, the now-playing header has no room for the full titles: it leaves
+// out the work titles and cuts each movement title (with its number) to its first 20
+// characters. In landscape the header is wide enough: it shows the full titles, work
+// titles too, and cuts what doesn't fit with an ellipsis (see common.css)
+const compactNowPlaying = matchMedia(
+  '(max-width: 700px) and (orientation: portrait), (pointer: coarse) and (hover: none) and (orientation: portrait)');
 const COMPACT_TITLE_CHARS = 20;
 
 function nowPlayingTitle(text) {
@@ -460,7 +462,7 @@ function nowPlayingTitle(text) {
   return Array.from(text).slice(0, COMPACT_TITLE_CHARS).join('').trimEnd();  // whole characters, even outside the BMP
 }
 
-// Resizing the window across the phone width switches between the full and the compact titles
+// Resizing the window across the phone width, or turning the device, switches between the full and the compact titles
 compactNowPlaying.addEventListener('change', () => {
   if (currentArtist()) updateNowPlaying(currentWork(), currentMovement());
 });

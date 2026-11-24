@@ -471,8 +471,9 @@ body {
 
 #right-pane:has(#lyrics-inner.bilingual) #np-translation { margin-left: 0; }
 
-/* A mobile device (a touch screen without a mouse) or a window as narrow as a phone's (the same media query as
-   compactNowPlaying in app.js, which shows only the movement titles there, cut short): with both titles shown, the
+/* A mobile device (a touch screen without a mouse) or a window as narrow as a phone's (in portrait,
+   compactNowPlaying in app.js shows only the movement titles there, cut short; in landscape the work titles too,
+   cut with an ellipsis if they don't fit): with both titles shown, the
    original sits right after Prev and the translation right before Next, each as wide as its text (they share the
    room when both don't fit), instead of each centered in its share of the bar. A single title stays centered.
    Prev and Next are as small as the phone-sized playback buttons (see "Smartphone sizes" below), leaving the titles
